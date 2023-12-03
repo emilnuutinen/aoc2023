@@ -14,6 +14,7 @@ fn part1() -> color_eyre::Result<i32> {
             let games: Vec<&str> = parts[1].trim().split(';').collect();
 
             let mut possible = true;
+
             for game in games {
                 let counts: Vec<&str> = game.trim().split(',').collect();
                 for count in counts {
@@ -53,14 +54,55 @@ fn part1() -> color_eyre::Result<i32> {
     Ok(score)
 }
 
-fn _part2() -> color_eyre::Result<()> {
-    for _line in include_str!("../../data/day02/input.txt").split('\n') {}
-    Ok(())
+fn part2() -> color_eyre::Result<i32> {
+    let mut score = 0;
+    for line in include_str!("../../data/day02/input.txt").split('\n') {
+        let parts: Vec<&str> = line.split(':').collect();
+        if parts.len() != 2 {
+        } else {
+            let games: Vec<&str> = parts[1].trim().split(';').collect();
+
+            let mut min_red = 0;
+            let mut min_green = 0;
+            let mut min_blue = 0;
+
+            for game in games {
+                let counts: Vec<&str> = game.trim().split(',').collect();
+                for count in counts {
+                    let count_parts: Vec<&str> = count.split_whitespace().collect();
+
+                    let color = count_parts[1].to_lowercase();
+                    let amount: i32 = count_parts[0].parse().unwrap();
+
+                    match color.as_str() {
+                        "red" => {
+                            if amount > min_red {
+                                min_red = amount
+                            }
+                        }
+                        "green" => {
+                            if amount > min_green {
+                                min_green = amount
+                            }
+                        }
+                        "blue" => {
+                            if amount > min_blue {
+                                min_blue = amount
+                            }
+                        }
+                        _ => (),
+                    }
+                }
+            }
+            score += min_red * min_green * min_blue
+        }
+    }
+    Ok(score)
 }
 
 fn main() {
     let part1 = part1();
-    //let part2 = part2();
+    let part2 = part2();
     println!("Part 1 answer: {:?}", part1.unwrap());
-    //println!("Part 2 answer: {:?}", part2.unwrap());
+    println!("Part 2 answer: {:?}", part2.unwrap());
 }
